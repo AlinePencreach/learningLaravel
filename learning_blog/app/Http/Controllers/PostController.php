@@ -6,6 +6,7 @@ use App\Models\Post;
 use Illuminate\Routing\Controller;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use App\Models\Category;
 
 class PostController extends Controller
 {
@@ -14,7 +15,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::with('category')->get();
+        $posts = Post::with('category', 'user')->get();
         return view('posts.index', compact('posts'));
     }
 
@@ -23,7 +24,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+        return view('posts.create', compact('categories'));
     }
 
     /**
@@ -31,7 +33,14 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        //
+        Post::create([
+            'title' => $request->title,
+            'content' => $request->content,
+            'category' => $request->category,
+            'user' => $request->user,
+        ]);
+
+        return redirect()->route('posts.index')->with('success', 'votre post à été créé');
     }
 
     /**
