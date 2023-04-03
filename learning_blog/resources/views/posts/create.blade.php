@@ -13,7 +13,7 @@
       @endforeach
     </div>
     
-      <form class="m-3 p-3" action="{{route('posts.store')}}" method="post" >
+      <form class="m-3 p-3" action="{{route('posts.store')}}" method="post" enctype="multipart/form-data">
 
           @csrf 
 
